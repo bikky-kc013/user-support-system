@@ -1,0 +1,18 @@
+This is a user support system where the client can create the tickets and the admins can take action regarding the ticket created by the clients.
+The admins have the right to view the ticket status of the client and once the ticket is resolved they can delete the tickets. 
+The ticket has two status which can be either open or close. If the ticket is in the open status then the client is eligible for adding the message and files in the open ticket. 
+If the status of the ticket is close then the clients cannot make further message in the ticket.
+You can view the database structure in the database file that I have provided along with this code. The client also have the right to close the ticket but the tickets 
+deleted by the client is soft delete.
+
+
+Technologies used :
+1) Node.js 
+2) Express.js 
+3) Bcrypt
+4) mySql
+5) jsonwebtoken
+6) nodemon 
+7) restful api
+
+
