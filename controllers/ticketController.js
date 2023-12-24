@@ -1,4 +1,5 @@
 const customError = require("../middlewares/customError");
+const fs  = require("fs");
 const { getUser_id, getUser_role } = require("../helpers/jwtTokens");
 const { 
   createTicketModel,
@@ -32,6 +33,7 @@ const createTicket  = async (req,res,next)=>{
       const images = req.files;
       const ticketImages = images.map((image) => image.filename).join(',')
       const ticketCreation  = await createTicketModel(user_id, subject);
+      if(ticketCreation!='true') throw new customError("Unable to create the ticket")
       const ticketId = await getTicketId(user_id);
       const messageInsert  = await  insertMessageModel(ticketId, content);
       const messageId = await getMessageId(ticketId);
@@ -42,6 +44,13 @@ const createTicket  = async (req,res,next)=>{
         ticket_id:ticketId
       });
     }catch(error){
+      if(error){
+        const images = req.files;
+        images.forEach(async files => {
+        const imageName = files.filename;
+        await fs.promises.unlink(`./public/uploads/images/${imageName}`); 
+        });
+      }
       next(error);
     }
   };
@@ -81,6 +90,13 @@ const createMessage = async (req,res,next)=>{
       status:"Success"
     });
   }catch(error){
+    if(error){
+      const images = req.files;
+      images.forEach(async files => {
+      const imageName = files.filename
+      await fs.promises.unlink(`./public/uploads/images/${imageName}`); 
+      });
+    }
     next(error)
   }
 }
@@ -92,6 +108,7 @@ const deleteTicketByUser  = async (req,res,next)=>{
     const user_id  = await getUser_id(token); 
     const ticketId = await req.body;
     const userDeletion  = await userTicketDeletion(user_id, ticketId);
+    if(!userDeletion) throw new customError("Unable to delete the ticket");
     res.json({
       message:userDeletion,
       status:"True"

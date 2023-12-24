@@ -10,7 +10,7 @@ const createTicketModel = async (user_id, subject) => {
         subject,
       ]);
     if (insertedRow.affectedRows == 1) {
-      return "true";
+      return "true1";
     }
   } catch (error) {
     console.log(error);
