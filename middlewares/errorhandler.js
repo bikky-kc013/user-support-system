@@ -9,7 +9,7 @@ const errorHandler = async (err, req, res, next) => {
   err.status = err.status || "error";
   res.status(err.statusCode).json({
     status: err.statusCode,
-    message: err.message,
+    message: err.message,  
   });
 };
 
